@@ -1,17 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faHomeLgAlt,
-  faTicket,
-  faCog,
-  faBars,
-} from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/logo/logo.png";
-import iconHouse from "../../assets/icon/iconhouse.svg";
-import iconTicket from "../../assets/icon/iconticket.svg";
-import iconTicket2 from "../../assets/icon/iconticket2.svg";
-import iconbars from "../../assets/icon/iconbars.svg";
-import icondevice from "../../assets/icon/icondevice.svg";
-import iconSetting from "../../assets/icon/iconsetting.svg";
 
 const Menu = () => {
   return (

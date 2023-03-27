@@ -1,0 +1,84 @@
+.wrapper {
+    width: 370px;
+    background: #fff;
+    border-radius: 20px;
+
+    box-shadow: 4px 4px 45px rgba(109, 46, 0, 0.35);
+    padding: 24px 32px 24px 32px;
+
+    header {
+        display: flex;
+        align-items: center;
+        width: 182px;
+        justify-content: space-between;
+
+        .current-date {
+            font-size: 18px;
+            font-weight: 700;
+            text-align: center;
+        }
+    }
+
+    .calendar {
+        ul {
+            display: flex;
+            list-style: none;
+            flex-wrap: wrap;
+            text-align: center;
+
+            li {
+                position: relative;
+                width: calc(100%/7);
+            }
+        }
+
+
+        .weeks {
+            li {
+                font-size: 18px;
+                font-weight: 600;
+                color: #C55E00;
+            }
+        }
+
+        .days {
+
+            li {
+                font-size: 16px;
+                color: #23221F;
+                font-weight: 500;
+                z-index: 1;
+                cursor: pointer;
+                margin-top: 30px;
+            }
+
+            li.inactive {
+                opacity: 0.3;
+            }
+
+            li.active {
+                color: #fff;
+            }
+
+            li::before {
+                position: absolute;
+                content: "";
+                height: 32px;
+                width: 32px;
+                top: 50%;
+                left: 50%;
+                z-index: -1;
+                border-radius: 50%;
+                transform: translate(-50%, -50%);
+            }
+
+            li:hover::before {
+                background: #FFBA7B;
+            }
+
+            li.active::before {
+                background: #FFBA7B;
+            }
+        }
+    }
+}

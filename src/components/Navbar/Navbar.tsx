@@ -1,5 +1,3 @@
-import { faBell, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import avatar from "../../assets/avatar/avatar.png";
 import iconSearch from "../../assets/icon/iconsearch.svg";
 import iconEnvelope from "../../assets/icon/iconenvelope.svg";
