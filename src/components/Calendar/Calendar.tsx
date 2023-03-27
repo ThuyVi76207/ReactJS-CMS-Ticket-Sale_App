@@ -1,12 +1,19 @@
 import previous from "../../assets/icon/Previous.svg";
 import next from "../../assets/icon/Next.svg";
 import "./CalendarStyles.scss";
+import { useEffect, useRef, useState } from "react";
+
 const Calendar = () => {
+  const [listDay, setListDay] = useState<number[]>([]);
+  const [listLastDay, setListLastDay] = useState<number[]>([]);
+  const [listFirstDay, setListFirstDay] = useState<number[]>([]);
+  var isCurrentDay = useRef<string>("");
+
   //getting new date, current year and month
   let date = new Date(),
     currYear = date.getFullYear(),
     currMonth = date.getMonth();
-
+  const [month, setMonth] = useState<number>(currMonth);
   const months = [
     "Tháng 1",
     "Tháng 2",
@@ -22,24 +29,62 @@ const Calendar = () => {
     "Tháng 12",
   ];
 
-  let lastDateofMonth = new Date(currYear, currMonth + 1, 0).getDate(); //getting last date of month
-  let arrDays = [];
+  useEffect(() => {
+    const renderCalendar = () => {
+      let arrDays: number[] = [];
+      let arrLastDays: number[] = [];
+      let arrFirstDay: number[] = [];
 
-  for (let i = 1; i <= lastDateofMonth; i++) {
-    arrDays.push(i);
-  }
+      let firstDateofMonth = new Date(currYear, month, 1).getDay(), //getting first day of month
+        lastDateofMonth = new Date(currYear, month + 1, 0).getDate(), //getting last day of month
+        lastDayofMonth = new Date(currYear, month, lastDateofMonth).getDay(),
+        lastDateofLastMonth = new Date(currYear, month, 0).getDate(); //getting last date of month
 
-  // useEffect(() => {
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // });
+      for (let i = firstDateofMonth; i > 0; i--) {
+        arrLastDays.push(lastDateofLastMonth - i + 1);
+      }
+
+      for (let i = 1; i <= lastDateofMonth; i++) {
+        i === new Date().getDate() &&
+        month === new Date().getMonth() &&
+        currYear === new Date().getFullYear()
+          ? (isCurrentDay.current = "active")
+          : (isCurrentDay.current = "");
+
+        arrDays.push(i);
+      }
+
+      for (let i = lastDayofMonth; i < 6; i++) {
+        arrFirstDay.push(i - lastDayofMonth + 1);
+      }
+      setListLastDay(arrLastDays);
+      setListDay(arrDays);
+
+      setListFirstDay(arrFirstDay);
+    };
+    renderCalendar();
+  }, [month, currYear]);
+
+  const onClickSetMonthPrev = () => {
+    setMonth(month - 1);
+  };
+
+  const onClickSetMonthNext = () => {
+    setMonth(month + 1);
+  };
+  console.log("check isToDay", isCurrentDay);
 
   return (
     <div className="wrapper">
       <header>
-        <img className="cursor-pointer" src={previous} alt="" />
-        <p className="current-date">{`${months[currMonth]} ${currYear}`}</p>
-        <img className="cursor-pointer" src={next} alt="" />
+        <span onClick={onClickSetMonthPrev}>
+          <img className="cursor-pointer" src={previous} alt="" />
+        </span>
+
+        <p className="current-date">{`${months[month]} ${currYear}`}</p>
+        <span onClick={onClickSetMonthNext}>
+          <img className="cursor-pointer" src={next} alt="" />
+        </span>
       </header>
       <div className="calendar">
         <ul className="weeks">
@@ -52,9 +97,33 @@ const Calendar = () => {
           <li>CN</li>
         </ul>
         <ul className="days">
-          {arrDays.map((item, index) => {
-            return <li key={index}>{item}</li>;
-          })}
+          {listLastDay &&
+            listLastDay.length > 0 &&
+            listLastDay.map((item, index) => {
+              return (
+                <li className="inactive" key={index}>
+                  {item}
+                </li>
+              );
+            })}
+          {listDay &&
+            listDay.length > 0 &&
+            listDay.map((item, index) => {
+              return (
+                <li className={`${isCurrentDay.current}`} key={index}>
+                  {item}
+                </li>
+              );
+            })}
+          {listFirstDay &&
+            listFirstDay.length > 0 &&
+            listFirstDay.map((item, index) => {
+              return (
+                <li className="inactive" key={index}>
+                  {item}
+                </li>
+              );
+            })}
         </ul>
       </div>
     </div>
