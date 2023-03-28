@@ -84,11 +84,22 @@ const Calendar = () => {
           <img className="cursor-pointer" src={previous} alt="" />
         </span>
 
-        <p className="current-date">{`${months[month]} ${year}`}</p>
+        <p className="current-date">{`${months[month]}, ${year}`}</p>
         <span onClick={onClickSetMonthNext}>
           <img className="cursor-pointer" src={next} alt="" />
         </span>
       </header>
+      <div className="radio-btn my-[20px]">
+        <label className="form-control">
+          <input type="radio" name="radio" defaultChecked />
+          Theo ngày
+        </label>
+
+        <label className="form-control">
+          <input type="radio" name="radio" />
+          Theo tuần
+        </label>
+      </div>
       <div className="calendar">
         <ul className="weeks">
           <li>CN</li>
@@ -115,7 +126,7 @@ const Calendar = () => {
               let isToday =
                 item === new Date().getDate() &&
                 month === new Date().getMonth() &&
-                currYear === new Date().getFullYear()
+                year === new Date().getFullYear()
                   ? "active"
                   : "";
               return (
