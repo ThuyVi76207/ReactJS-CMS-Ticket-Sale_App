@@ -12,7 +12,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to={"/insight"} />}></Route>
-            <Route path="/insight" element={<CMSTicketApp />}></Route>
+            <Route path="/insight/*" element={<CMSTicketApp />}></Route>
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </BrowserRouter>
