@@ -1,19 +1,21 @@
 import previous from "../../assets/icon/Previous.svg";
 import next from "../../assets/icon/Next.svg";
 import "./CalendarStyles.scss";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+
+let date = new Date(),
+  currYear = date.getFullYear(),
+  currMonth = date.getMonth();
 
 const Calendar = () => {
   const [listDay, setListDay] = useState<number[]>([]);
   const [listLastDay, setListLastDay] = useState<number[]>([]);
   const [listFirstDay, setListFirstDay] = useState<number[]>([]);
-  var isCurrentDay = useRef<string>("");
 
   //getting new date, current year and month
-  let date = new Date(),
-    currYear = date.getFullYear(),
-    currMonth = date.getMonth();
+
   const [month, setMonth] = useState<number>(currMonth);
+  const [year, setYear] = useState<number>(currYear);
   const months = [
     "Tháng 1",
     "Tháng 2",
@@ -30,27 +32,28 @@ const Calendar = () => {
   ];
 
   useEffect(() => {
+    if (month < 0 || month > 11) {
+      date = new Date(year, month);
+      setYear(date.getFullYear());
+      setMonth(date.getMonth());
+    } else {
+      date = new Date();
+    }
     const renderCalendar = () => {
       let arrDays: number[] = [];
       let arrLastDays: number[] = [];
       let arrFirstDay: number[] = [];
 
-      let firstDateofMonth = new Date(currYear, month, 1).getDay(), //getting first day of month
-        lastDateofMonth = new Date(currYear, month + 1, 0).getDate(), //getting last day of month
-        lastDayofMonth = new Date(currYear, month, lastDateofMonth).getDay(),
-        lastDateofLastMonth = new Date(currYear, month, 0).getDate(); //getting last date of month
+      let firstDateofMonth = new Date(year, month, 1).getDay(), //getting first day of month
+        lastDateofMonth = new Date(year, month + 1, 0).getDate(), //getting last day of month
+        lastDayofMonth = new Date(year, month, lastDateofMonth).getDay(),
+        lastDateofLastMonth = new Date(year, month, 0).getDate(); //getting last date of month
 
       for (let i = firstDateofMonth; i > 0; i--) {
         arrLastDays.push(lastDateofLastMonth - i + 1);
       }
 
       for (let i = 1; i <= lastDateofMonth; i++) {
-        i === new Date().getDate() &&
-        month === new Date().getMonth() &&
-        currYear === new Date().getFullYear()
-          ? (isCurrentDay.current = "active")
-          : (isCurrentDay.current = "");
-
         arrDays.push(i);
       }
 
@@ -63,7 +66,7 @@ const Calendar = () => {
       setListFirstDay(arrFirstDay);
     };
     renderCalendar();
-  }, [month, currYear]);
+  }, [month, year]);
 
   const onClickSetMonthPrev = () => {
     setMonth(month - 1);
@@ -72,7 +75,7 @@ const Calendar = () => {
   const onClickSetMonthNext = () => {
     setMonth(month + 1);
   };
-  console.log("check isToDay", isCurrentDay);
+  console.log("Check date", date, month, year);
 
   return (
     <div className="wrapper">
@@ -81,20 +84,20 @@ const Calendar = () => {
           <img className="cursor-pointer" src={previous} alt="" />
         </span>
 
-        <p className="current-date">{`${months[month]} ${currYear}`}</p>
+        <p className="current-date">{`${months[month]} ${year}`}</p>
         <span onClick={onClickSetMonthNext}>
           <img className="cursor-pointer" src={next} alt="" />
         </span>
       </header>
       <div className="calendar">
         <ul className="weeks">
+          <li>CN</li>
           <li>T2</li>
           <li>T3</li>
           <li>T4</li>
           <li>T5</li>
           <li>T6</li>
           <li>T7</li>
-          <li>CN</li>
         </ul>
         <ul className="days">
           {listLastDay &&
@@ -109,8 +112,14 @@ const Calendar = () => {
           {listDay &&
             listDay.length > 0 &&
             listDay.map((item, index) => {
+              let isToday =
+                item === new Date().getDate() &&
+                month === new Date().getMonth() &&
+                currYear === new Date().getFullYear()
+                  ? "active"
+                  : "";
               return (
-                <li className={`${isCurrentDay.current}`} key={index}>
+                <li className={isToday} key={index}>
                   {item}
                 </li>
               );
