@@ -19,6 +19,58 @@
         }
     }
 
+    .radio-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .form-control {
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        input[type="radio"] {
+            /* Add if not using autoprefixer */
+            -webkit-appearance: none;
+            /* Remove most all native input styles */
+            appearance: none;
+
+            background-color: #fff;
+
+            color: #27AEF9;
+            width: 24px;
+            height: 24px;
+            border: 2px solid currentColor;
+            border-radius: 20px;
+
+            display: grid;
+            place-content: center;
+        }
+
+        input[type="radio"]::before {
+            content: "";
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--form-control-color);
+            /* Windows High Contrast Mode */
+            background-color: #27AEF9;
+        }
+
+        input[type="radio"]:checked::before {
+            transform: scale(1);
+        }
+
+
+
+
+    }
+
     .calendar {
         ul {
             display: flex;
