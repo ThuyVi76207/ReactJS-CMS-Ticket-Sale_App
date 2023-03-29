@@ -14,7 +14,7 @@ export default function MainLayout({ children }: Props) {
         </div>
         <div className="w-[1600px]">
           <Navbar />
-          <div className="h-[963px] bg-[#FFFFFF] rounded-[24px] mr-[32px]">
+          <div className=" bg-[#FFFFFF] rounded-[24px] mr-[32px] mb-[32px] pb-[20px]">
             {children}
           </div>
         </div>

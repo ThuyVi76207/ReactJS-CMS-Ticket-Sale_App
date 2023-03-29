@@ -1,0 +1,29 @@
+#tableManager {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#tableManager td,
+#tableManager th {
+    // border: 1px solid #ddd;
+    padding: 9px 8px;
+}
+
+#tableManager tr:nth-child(odd) {
+    background-color: #F7F8FB;
+}
+
+#tableManager tr:hover {
+    background-color: #ddd;
+    cursor: pointer;
+}
+
+#tableManager th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #F1F4F8;
+    color: #1E0D03;
+    font-size: 16px;
+    font-weight: 600;
+
+}

@@ -10,12 +10,12 @@ const Menu = () => {
         alt=""
       />
 
-      <div className="mt-[59px] ml-[33px] h-[572px] w-[252px] text-[#1E0D03] font-medium mr-[36px] text-[18px]">
+      <div className="mt-[59px] ml-[33px] 2xl:ml-[25px] mr-[33px] 2xl:mr-[25px] h-[572px] w-[252px] 2xl:w-[210px] text-[#1E0D03] font-medium text-[18px] 2xl:text-[16px]">
         <ul className="flex flex-col items-start gap-[8px]">
           <li className="hover:bg-[#FFB800]  opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold  hover:text-white rounded-[8px]">
             <Link
               to={"/insight"}
-              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px]"
+              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px] 2xl:pl-[8px] 2xl:pr-[16px]"
             >
               <span className="fill-current">
                 <svg
@@ -33,7 +33,7 @@ const Menu = () => {
           <li className="hover:bg-[#FFB800] opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold hover:text-white rounded-[8px]">
             <Link
               to={"/insight/quan-ly-ve"}
-              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px]"
+              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px] 2xl:pl-[8px] 2xl:pr-[16px]"
             >
               <span className="fill-current">
                 <svg
@@ -52,7 +52,7 @@ const Menu = () => {
           <li className="hover:bg-[#FFB800] opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold hover:text-white rounded-[8px]">
             <Link
               to={"/insight/doi-soat-ve"}
-              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px]"
+              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px] 2xl:pl-[8px] 2xl:pr-[16px]"
             >
               <span className="fill-current">
                 <svg
@@ -71,7 +71,7 @@ const Menu = () => {
           <li className="hover:bg-[#FFB800] opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold hover:text-white rounded-[8px]">
             <Link
               to={"/insight/danh-sach-su-kien"}
-              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px]"
+              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px] 2xl:pl-[8px] 2xl:pr-[16px]"
             >
               {" "}
               <span className="fill-current">
@@ -90,7 +90,7 @@ const Menu = () => {
           <li className="hover:bg-[#FFB800] opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold  hover:text-white rounded-[8px]">
             <Link
               to={"/insight/quan-ly-thiet-bi"}
-              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px]"
+              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px] 2xl:pl-[8px] 2xl:pr-[16px]"
             >
               <span className="fill-current">
                 <svg
@@ -108,7 +108,7 @@ const Menu = () => {
           <li className="hover:bg-[#FFB800] opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold  hover:text-white rounded-[8px]">
             <Link
               to={"/insight/cai-dat"}
-              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px]"
+              className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px] 2xl:pl-[8px] 2xl:pr-[16px]"
             >
               <span className="fill-current">
                 <svg
@@ -124,7 +124,10 @@ const Menu = () => {
             </Link>
           </li>
           <li className="opacity-60 hover:opacity-100 w-full  cursor-pointer hover:bg-[#FFB800] hover:font-bold flex items-center hover:text-white rounded-[8px]">
-            <Link to={"/insight/goi-dich-vu"} className="pl-[80px] pr-[60px]">
+            <Link
+              to={"/insight/goi-dich-vu"}
+              className="pl-[80px] pr-[60px] 2xl:pl-[60px] 2xl:pr-[40px] "
+            >
               <h2>Gói dịch vụ</h2>
             </Link>
           </li>
