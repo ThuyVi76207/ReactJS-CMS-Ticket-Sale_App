@@ -6,7 +6,7 @@ import iconBell from "../../assets/icon/fi_bell.svg";
 const Navbar = () => {
   return (
     <div className="flex items-center justify-between my-[17px] mr-[32px]">
-      <div className="flex gap-[16px] items-center justify-between  w-[437px] h-[48px] bg-[#EDE6E6] rounded-[12px] py-[10px] px-[16px]">
+      <div className="flex gap-[16px] items-center justify-between  w-[420px] h-[45px] bg-[#EDE6E6] rounded-[12px] py-[10px] px-[16px]">
         <input
           type="text"
           placeholder="Search"
