@@ -11,18 +11,18 @@ const TicketManager = () => {
   return (
     <MainLayout>
       <div className="px-[24px]">
-        <h2 className="text-[36px] text-[#1E0D03] font-bold pt-[24px]">
+        <h2 className="text-[30px] text-[#1E0D03] font-bold pt-[24px]">
           Danh sách vé
         </h2>
 
         <div className="flex items-center justify-between mt-[32px]">
           <SearchInput />
-          <div className="flex items-center gap-[10px] text-[#FF993C] text-[18px] font-bold">
-            <div className="flex items-center border border-[#FF993C] py-[11px] px-[16px] rounded-[6px] gap-[12px] cursor-pointer">
+          <div className="flex items-center gap-[10px] text-[#FF993C] text-[16px] font-bold">
+            <div className="flex items-center border border-[#FF993C] py-[8px] px-[14px] rounded-[6px] gap-[12px] cursor-pointer">
               <img className="w-[20px]" src={iconFillter} alt="" />
               <span>Lọc vé</span>
             </div>
-            <div className="border border-[#FF993C] py-[11px] px-[16px] rounded-[6px] cursor-pointer">
+            <div className="border border-[#FF993C] py-[8px] px-[14px] rounded-[6px] cursor-pointer">
               Xuất file (.csv)
             </div>
           </div>

@@ -10,9 +10,9 @@ const Menu = () => {
         alt=""
       />
 
-      <div className="mt-[59px] ml-[33px] 2xl:ml-[25px] mr-[33px] 2xl:mr-[25px] h-[572px] w-[252px] 2xl:w-[210px] text-[#1E0D03] font-medium text-[18px] 2xl:text-[16px]">
+      <div className="mt-[59px] ml-[33px] 2xl:ml-[20px] mr-[33px] 2xl:mr-[20px] h-[572px] w-[252px] 2xl:w-[210px] text-[#1E0D03] font-medium text-[18px] 2xl:text-[16px]">
         <ul className="flex flex-col items-start gap-[8px]">
-          <li className="hover:bg-[#FFB800]  opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold  hover:text-white rounded-[8px]">
+          <li className="hover:bg-[#FFB800] opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold  hover:text-white rounded-[8px]">
             <Link
               to={"/insight"}
               className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px] 2xl:pl-[8px] 2xl:pr-[16px]"
@@ -73,7 +73,6 @@ const Menu = () => {
               to={"/insight/danh-sach-su-kien"}
               className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px] 2xl:pl-[8px] 2xl:pr-[16px]"
             >
-              {" "}
               <span className="fill-current">
                 <svg
                   width="20"
