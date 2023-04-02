@@ -123,7 +123,7 @@ const Menu = () => {
               <h2>Cài đặt</h2>
             </Link>
           </li>
-          <li className="opacity-60 hover:opacity-100 w-full  cursor-pointer hover:bg-[#FFB800] hover:font-bold flex items-center hover:text-white rounded-[8px]">
+          <li className="opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold flex items-center">
             <Link
               to={"/insight/goi-dich-vu"}
               className="pl-[80px] pr-[60px] 2xl:pl-[60px] 2xl:pr-[40px] "
