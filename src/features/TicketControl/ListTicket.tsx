@@ -15,7 +15,7 @@ const ListTicket = () => {
         </tr>
         {Data_ListTicketControl.map((val: any, index) => {
           return (
-            <tr key={index} className="text-[14px] font-medium opacity-70">
+            <tr key={index} className="text-[12px] font-medium opacity-70">
               <td className="text-center">{val.id}</td>
               <td>{val.ticketNumber}</td>
               <td>{val.nameEvent}</td>

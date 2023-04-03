@@ -213,3 +213,26 @@ export const Data_ListTicketControl = [
     status: false,
   },
 ];
+
+export const Data_ListPackageTicket = [
+  {
+    id: 1,
+    packageId: "ALT20210501",
+    packageName: "Gói gia đình",
+    applicationDate: "14/04/2021 08:00:00",
+    expirationDate: "14/04/2021 23:00:00",
+    price: "90000",
+    comboPrice: "360000",
+    status: 1,
+  },
+  {
+    id: 2,
+    packageId: "ALT20210501",
+    packageName: "Gói gia đình",
+    applicationDate: "14/04/2021 08:00:00",
+    expirationDate: "14/04/2021 23:00:00",
+    price: "90000",
+    comboPrice: "360000",
+    status: 2,
+  },
+];
