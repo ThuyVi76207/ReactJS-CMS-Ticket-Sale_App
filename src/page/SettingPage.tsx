@@ -3,8 +3,17 @@ import SearchInput from "../components/InputCommon/SearchInput";
 import MainLayout from "../layouts/MainLayout";
 import fiEdit from "../assets/icon/fi_edit.svg";
 import { Options_ControlStatus } from "../constant";
+import { useAppDispatch } from "../hooks";
+import { addSuccessModal } from "../reducers/modal/moreTicketModalSlice";
 
 const SettingPage = () => {
+  const dispatch = useAppDispatch();
+  const handleOnClickAppComboTicket = () => {
+    dispatch(addSuccessModal({ title: "Thêm gói vé", rightButtonText: "Lưu" }));
+  };
+  const handleOnclickUpdateTicket = () => {
+    dispatch(addSuccessModal({ title: "Cap nhat ve", rightButtonText: "luu" }));
+  };
   return (
     <MainLayout>
       <div className="px-[24px]">
@@ -18,8 +27,10 @@ const SettingPage = () => {
             <div className="border border-[#FF993C] py-[8px] px-[14px] rounded-[6px] cursor-pointer">
               Xuất file (.csv)
             </div>
-            <div className="flex items-center border bg-[#FF993C] text-white py-[8px] px-[14px] rounded-[6px] gap-[12px] cursor-pointer">
-              {/* <img className="w-[20px]" src={iconFillter} alt="" /> */}
+            <div
+              onClick={handleOnClickAppComboTicket}
+              className="flex items-center border bg-[#FF993C] text-white py-[8px] px-[14px] rounded-[6px] gap-[12px] cursor-pointer"
+            >
               <span>Thêm gói vé</span>
             </div>
           </div>
@@ -72,7 +83,10 @@ const SettingPage = () => {
                       ) : null;
                     })}
                   </td>
-                  <td className="flex items-center gap-2">
+                  <td
+                    onClick={handleOnclickUpdateTicket}
+                    className="flex items-center gap-2"
+                  >
                     <img src={fiEdit} alt="" />
                     <h2 className="text-[#FF993C]">Cập nhật</h2>
                   </td>
