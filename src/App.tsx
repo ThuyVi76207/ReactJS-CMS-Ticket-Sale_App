@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import NotFound from "./components/NotFound";
+import MoreTicketModal from "./components/Modal/MoreTicketModal";
 
 const CMSTicketApp = React.lazy(() => import("./page"));
 
@@ -16,6 +17,7 @@ function App() {
             <Route path="*" element={<NotFound />}></Route>
           </Routes>
         </BrowserRouter>
+        <MoreTicketModal />
       </Suspense>
     </div>
   );
