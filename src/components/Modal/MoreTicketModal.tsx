@@ -7,15 +7,18 @@ import TimePicker from "react-time-picker";
 import "./MoreTicketModalStyles.scss";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
+import ScheduleCommon from "../InputCommon/ScheduleCommon";
 
 function MoreTicketModal() {
-  const [value, setValue] = useState(new Date());
+  const [value, setValue] = useState(); //new Date()
   const dispatch = useAppDispatch();
   const { title, rightButtonText } =
     useAppSelector((state) => state.moreTicketModal) || {};
   console.log("check titile", title, rightButtonText);
 
   const [nameTicket, setNameTicket] = useState("");
+  const [dateStartContract, setDateStartContract] = useState();
+  //new Date().toISOString().split("T")[0]
   const [error, setError] = useState({
     nameTicket: "",
   });
@@ -109,11 +112,11 @@ function MoreTicketModal() {
         className={`animate__animated animate__bounceIn fixed top-0 right-0 left-0 bottom-0 m-auto z-50 w-full xl:w-[758px] h-[628px]`}
       >
         <div className="relative w-full h-full">
-          <div className="relative bg-white h-full rounded-[16px] px-[32px]">
+          <div className="relative bg-white h-full rounded-[16px] px-[20px]">
             <h2 className="text-[24px] text-center font-bold pt-[24px]">
               {title}
             </h2>
-            <div className="w-[50%] my-[30px]">
+            <div className="w-[45%] my-[30px]">
               <CommonInput
                 name="nameTicket"
                 field="Tên gói vé"
@@ -125,26 +128,56 @@ function MoreTicketModal() {
                 required
               />
             </div>
-            <div className="flex items-center gap-[30px]">
+            <div className="flex items-center gap-[25px]">
               <div>
                 <h2 className="text-[16px] font-semibold opacity-70">
                   Ngày áp dụng
                 </h2>
-                <div>
-                  <TimePicker
-                    onChange={(e: any) => setValue(e)}
-                    value={value}
-                    format={"HH:mm:ss"}
-                    hourPlaceholder="HH"
-                    minutePlaceholder="mm"
-                    secondPlaceholder="ss"
-                  />
+                <div className="flex gap-[10px] mt-2">
+                  <div className="w-[47%]">
+                    <ScheduleCommon
+                      onChange={(e: any) =>
+                        setDateStartContract(e.target.value)
+                      }
+                      date={dateStartContract}
+                    />
+                  </div>
+                  <div>
+                    <TimePicker
+                      onChange={(e: any) => setValue(e)}
+                      value={value}
+                      format={"HH:mm:ss"}
+                      hourPlaceholder="HH"
+                      minutePlaceholder="mm"
+                      secondPlaceholder="ss"
+                    />
+                  </div>
                 </div>
               </div>
               <div>
                 <h2 className="text-[16px] font-semibold opacity-70">
                   Ngày hết hạn
                 </h2>
+                <div className="flex gap-[10px] mt-2">
+                  <div className="w-[47%]">
+                    <ScheduleCommon
+                      onChange={(e: any) =>
+                        setDateStartContract(e.target.value)
+                      }
+                      date={dateStartContract}
+                    />
+                  </div>
+                  <div>
+                    <TimePicker
+                      onChange={(e: any) => setValue(e)}
+                      value={value}
+                      format={"HH:mm:ss"}
+                      hourPlaceholder="HH"
+                      minutePlaceholder="mm"
+                      secondPlaceholder="ss"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
