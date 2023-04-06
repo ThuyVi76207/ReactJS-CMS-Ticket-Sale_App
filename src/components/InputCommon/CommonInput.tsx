@@ -7,8 +7,8 @@ interface CommonInput {
   type?: string;
   maxLength: number;
   placeholder: string;
-  required: boolean;
-  error: String;
+  required?: boolean;
+  error?: String;
 }
 
 export default function CommonInput({

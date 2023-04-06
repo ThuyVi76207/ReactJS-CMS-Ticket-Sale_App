@@ -5,6 +5,7 @@ import fiEdit from "../assets/icon/fi_edit.svg";
 import { Options_ControlStatus } from "../constant";
 import { useAppDispatch } from "../hooks";
 import { addSuccessModal } from "../reducers/modal/moreTicketModalSlice";
+import { addSuccessUpdateModal } from "../reducers/modal/updateTicketModalSlice";
 
 const SettingPage = () => {
   const dispatch = useAppDispatch();
@@ -12,7 +13,12 @@ const SettingPage = () => {
     dispatch(addSuccessModal({ title: "Thêm gói vé", rightButtonText: "Lưu" }));
   };
   const handleOnclickUpdateTicket = () => {
-    dispatch(addSuccessModal({ title: "Cap nhat ve", rightButtonText: "luu" }));
+    dispatch(
+      addSuccessUpdateModal({
+        title: "Cập nhật thông tin gói vé",
+        rightButtonText: "Lưu",
+      })
+    );
   };
   return (
     <MainLayout>

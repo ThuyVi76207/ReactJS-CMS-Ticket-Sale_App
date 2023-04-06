@@ -1,36 +1,37 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { removeModal } from "../../reducers/modal/moreTicketModalSlice";
 import CommonInput from "../InputCommon/CommonInput";
 import TimePicker from "react-time-picker";
 import "./MoreTicketModalStyles.scss";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import ScheduleCommon from "../InputCommon/ScheduleCommon";
+import { removeUpdateModal } from "../../reducers/modal/updateTicketModalSlice";
 
 function UpdateTicketModal() {
   const [value, setValue] = useState(); //new Date()
   const dispatch = useAppDispatch();
   const { title, rightButtonText } =
-    useAppSelector((state) => state.moreTicketModal) || {};
+    useAppSelector((state) => state.updateTicketModal) || {};
   console.log("check titile", title, rightButtonText);
 
-  const [nameTicket, setNameTicket] = useState("");
+  const [idEvent, setIdEvent] = useState("");
+  const [nameEvent, setNameEvent] = useState("");
   const [dateStartContract, setDateStartContract] = useState();
   //new Date().toISOString().split("T")[0]
   const [error, setError] = useState({
-    nameTicket: "",
+    idEvent: "",
   });
 
   const isValidated = () => {
     let validated = true;
     let _error = {
-      nameTicket: "",
+      idEvent: "",
     };
-    if (nameTicket === "") {
+    if (idEvent === "") {
       validated = false;
-      _error.nameTicket = "Vui lòng nhập tên vé";
+      _error.idEvent = "Vui lòng nhập tên vé";
     }
 
     setError(_error);
@@ -38,7 +39,7 @@ function UpdateTicketModal() {
   };
 
   const handleCloseModal = () => {
-    dispatch(removeModal(null));
+    dispatch(removeUpdateModal(null));
   };
 
   console.log("Chekc time ", value);
@@ -59,17 +60,29 @@ function UpdateTicketModal() {
             <h2 className="text-[24px] text-center font-bold pt-[24px]">
               {title}
             </h2>
-            <div className="w-[45%] my-[30px]">
-              <CommonInput
-                name="nameTicket"
-                field="Tên gói vé"
-                value={nameTicket}
-                onChange={(e: any) => setNameTicket(e.target.value)}
-                maxLength={100}
-                placeholder="Nhập tên gói vé"
-                error={error.nameTicket}
-                required
-              />
+            <div className="flex justify-between my-[30px]">
+              <div className="w-[47%]">
+                <CommonInput
+                  name="idEvent"
+                  field="Mã sự kiện"
+                  value={idEvent}
+                  onChange={(e: any) => setIdEvent(e.target.value)}
+                  maxLength={100}
+                  placeholder="Nhập mã sự kiện"
+                  error={error.idEvent}
+                  required
+                />
+              </div>
+              <div className="w-[47%]">
+                <CommonInput
+                  name="idEvent"
+                  field="Tên sự kiện"
+                  value={nameEvent}
+                  onChange={(e: any) => setNameEvent(e.target.value)}
+                  maxLength={100}
+                  placeholder="Nhập mã sự kiện"
+                />
+              </div>
             </div>
             <div className="flex items-center gap-[25px]">
               <div>
