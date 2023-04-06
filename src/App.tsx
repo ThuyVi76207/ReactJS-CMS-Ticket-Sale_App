@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import NotFound from "./components/NotFound";
 import MoreTicketModal from "./components/Modal/MoreTicketModal";
+import UpdateTicketModal from "./components/Modal/UpdateTicketModal";
 
 const CMSTicketApp = React.lazy(() => import("./page"));
 
@@ -18,6 +19,7 @@ function App() {
           </Routes>
         </BrowserRouter>
         <MoreTicketModal />
+        <UpdateTicketModal />
       </Suspense>
     </div>
   );
