@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import moreTicketModalReducer from "../reducers/modal/moreTicketModalSlice";
+
 const rootReducer: any = {
   moreTicketModal: moreTicketModalReducer,
 };
