@@ -9,7 +9,7 @@ import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import ScheduleCommon from "../InputCommon/ScheduleCommon";
 
-function MoreTicketModal() {
+function UpdateTicketModal() {
   const [value, setValue] = useState(); //new Date()
   const dispatch = useAppDispatch();
   const { title, rightButtonText } =
@@ -202,4 +202,4 @@ function MoreTicketModal() {
   );
 }
 
-export default MoreTicketModal;
+export default UpdateTicketModal;
