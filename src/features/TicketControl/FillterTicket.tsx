@@ -23,7 +23,7 @@ const FillterTicket = () => {
             Đã đối soát
           </label>
           <label className="form-control">
-            <input type="radio" name="radio" defaultChecked />
+            <input type="radio" name="radio" />
             Chưa đối soát
           </label>
         </div>
