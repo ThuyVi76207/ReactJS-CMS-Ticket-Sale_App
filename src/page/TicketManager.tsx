@@ -6,8 +6,28 @@ import { Data_ListTicket } from "../Data";
 import iconSlicebar from "../assets/icon/slinebar.svg";
 import { Options_UseStatus } from "../constant";
 import SearchInput from "../components/InputCommon/SearchInput";
+import { collection, doc, onSnapshot } from "firebase/firestore";
+import { db } from "../components/firebase/firebase-config";
+import { useEffect, useState } from "react";
+import { hadleConvertsSecondsToDate } from "../function/FormatDate";
 
 const TicketManager = () => {
+  const [listTickets, setListTickets] = useState<any[]>([]);
+  const managerRef = collection(db, "ticket");
+  useEffect(() => {
+    const unscribe = onSnapshot(managerRef, (snapshot) => {
+      let listTicket: any[] = [];
+      snapshot.forEach((doc) => {
+        listTicket.push({ ...doc.data(), id: doc.id });
+      });
+      setListTickets(listTicket);
+    });
+    return () => unscribe();
+  }, []);
+
+  console.log("Check list tickets", listTickets);
+  console.log("Check date convert");
+
   return (
     <MainLayout>
       <div className="px-[24px]">
@@ -42,10 +62,10 @@ const TicketManager = () => {
               <th></th>
             </tr>
 
-            {Data_ListTicket.map((val: any, index) => {
+            {listTickets.map((val: any, index) => {
               return (
                 <tr key={index} className="text-[12px] font-medium opacity-70">
-                  <td className="text-center">{val.id}</td>
+                  <td className="text-center">{index + 1}</td>
                   <td>{val.bookingCode}</td>
                   <td>{val.ticketNumber}</td>
                   <td>{val.nameEvent}</td>
@@ -77,9 +97,21 @@ const TicketManager = () => {
                       ) : null;
                     })}
                   </td>
-                  <td className="text-right">{val.useDate}</td>
-                  <td className="text-right">{val.exportDate}</td>
-                  <td>{val.checkin}</td>
+                  <td className="text-right">
+                    {val.useDate
+                      ? hadleConvertsSecondsToDate(
+                          val.useDate.seconds,
+                          val.useDate.nanoseconds
+                        )
+                      : null}
+                  </td>
+                  <td className="text-right">
+                    {hadleConvertsSecondsToDate(
+                      val.exportDate.seconds,
+                      val.exportDate.nanoseconds
+                    )}
+                  </td>
+                  <td>{val.checkin ? val.checkin : "-"}</td>
                   <td>
                     <img src={iconSlicebar} alt="" />
                   </td>
