@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { removeModal } from "../../reducers/modal/moreTicketModalSlice";
 import CommonInput from "../InputCommon/CommonInput";
@@ -10,7 +9,7 @@ import "react-clock/dist/Clock.css";
 import ScheduleCommon from "../InputCommon/ScheduleCommon";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
-import { v4 as uuid } from "uuid";
+import { Options_ControlStatus } from "../../constant/index";
 
 function MoreTicketModal() {
   const comboTicketRef = collection(db, "comboticket");
@@ -39,6 +38,7 @@ function MoreTicketModal() {
   const [numberTicket, setNumberTicket] = useState<number>(0);
   const priceComboRef = useRef<number>(0);
   const numberTicketRef = useRef<number>(0);
+  const [status, setStatus] = useState<number>(1);
 
   const [error, setError] = useState({
     nameTicket: "",
@@ -69,8 +69,12 @@ function MoreTicketModal() {
 
     if (!isValidated()) return;
 
+    let idPackage = "ALT" + new Date().toISOString().split("T")[0];
+    let idPackageConvert = idPackage.replace(/-/g, "");
+    console.log("Check id package", idPackageConvert);
+
     await addDoc(comboTicketRef, {
-      idCombo: uuid(),
+      idCombo: idPackageConvert,
       nameTicket: nameTicket,
       dateStartContractUse: dateStartContractUse,
       valueTimeUse: valueTimeUse,
@@ -79,20 +83,24 @@ function MoreTicketModal() {
       priceOdd: priceOddRef.current,
       priceCombo: priceComboRef.current,
       numberTicket: numberTicketRef.current,
+      status: status,
     });
   };
 
-  const handleThirdPartyTicketOnChange = () => {
+  useEffect(() => {
     if (!oddticket) {
       priceOddRef.current = 0;
     } else {
       priceOddRef.current = priceOdd;
     }
-    setOddticket(!oddticket);
     console.log("Check oddticket", priceOddRef.current, oddticket);
+  }, [oddticket, priceOdd]);
+
+  const handleThirdPartyTicketOnChange = () => {
+    setOddticket(!oddticket);
   };
 
-  const handleThirdPartyComboTicketOnChange = () => {
+  useEffect(() => {
     if (!oddticketCombo) {
       priceComboRef.current = 0;
       numberTicketRef.current = 0;
@@ -100,8 +108,20 @@ function MoreTicketModal() {
       priceComboRef.current = priceCombo;
       numberTicketRef.current = numberTicket;
     }
+    console.log(
+      "Check combo oddticket",
+
+      priceComboRef.current,
+      oddticketCombo,
+      numberTicketRef.current
+    );
+  }, [oddticketCombo, priceCombo, numberTicket]);
+
+  const handleThirdPartyComboTicketOnChange = () => {
     setOddticketCombo(!oddticketCombo);
   };
+
+  // console.log("Check status", status);
 
   if (!title) return null;
   return (
@@ -247,9 +267,18 @@ function MoreTicketModal() {
                 <h2 className="text-[16px] font-semibold opacity-70">
                   Tình trạng
                 </h2>
-                <select className="border border-[#A5A8B1] py-[8px] px-[12px] rounded-[8px] outline-none mt-2">
-                  <option value={0}>Đang áp dụng</option>
-                  <option value={1}>Tắt</option>
+                <select
+                  onChange={(e: any) => {
+                    setStatus(e.target.value);
+                  }}
+                  value={status}
+                  className="border border-[#A5A8B1] py-[8px] px-[12px] rounded-[8px] outline-none mt-2"
+                >
+                  {Options_ControlStatus.map((option) => (
+                    <option value={option.value} key={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
                 </select>
               </div>
 

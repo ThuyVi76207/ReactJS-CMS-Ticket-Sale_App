@@ -6,8 +6,15 @@ import { Options_ControlStatus } from "../constant";
 import { useAppDispatch } from "../hooks";
 import { addSuccessModal } from "../reducers/modal/moreTicketModalSlice";
 import { addSuccessUpdateModal } from "../reducers/modal/updateTicketModalSlice";
+import { useEffect, useState } from "react";
+import { collection, doc, onSnapshot } from "firebase/firestore";
+import { db } from "../components/firebase/firebase-config";
+import { hadleConvertsSecondsToDate } from "../function/FormatDate";
 
 const SettingPage = () => {
+  const [listPackageTicket, setListPackageTicket] = useState<any[]>([]);
+  const managerRef = collection(db, "comboticket");
+
   const dispatch = useAppDispatch();
   const handleOnClickAppComboTicket = () => {
     dispatch(addSuccessModal({ title: "Thêm gói vé", rightButtonText: "Lưu" }));
@@ -20,6 +27,20 @@ const SettingPage = () => {
       })
     );
   };
+
+  useEffect(() => {
+    const unscribe = onSnapshot(managerRef, (snapshot) => {
+      let listComboTicket: any[] = [];
+      snapshot.forEach((doc) => {
+        listComboTicket.push({ ...doc.data(), id: doc.id });
+      });
+      setListPackageTicket(listComboTicket);
+    });
+
+    return () => unscribe();
+  }, []);
+
+  console.log("Check list package", listPackageTicket);
   return (
     <MainLayout>
       <div className="px-[24px]">
@@ -55,7 +76,25 @@ const SettingPage = () => {
               <th className="text-left">Tình trạng</th>
               <th></th>
             </tr>
-            {Data_ListPackageTicket.map((item, ind) => {
+            {listPackageTicket.map((item, ind) => {
+              return (
+                <tr key={ind} className="text-[12px] font-medium opacity-70">
+                  <td className="text-center">{ind + 1}</td>
+                  <td className="text-left">{item.idCombo}</td>
+                  <td className="text-center">{item.nameTicket}</td>
+                  <td className="text-right">
+                    <h2>{item.dateStartContractUse}</h2>
+                    <h2>
+                      {hadleConvertsSecondsToDate(
+                        item.valueTimeUse.seconds,
+                        item.valueTimeUse.nanoseconds
+                      )}
+                    </h2>
+                  </td>
+                </tr>
+              );
+            })}
+            {/* {Data_ListPackageTicket.map((item, ind) => {
               return (
                 <tr key={ind} className="text-[12px] font-medium opacity-70">
                   <td className="text-center">{item.id}</td>
@@ -98,7 +137,7 @@ const SettingPage = () => {
                   </td>
                 </tr>
               );
-            })}
+            })} */}
           </tbody>
         </table>
         <div className="mt-[54px]"></div>

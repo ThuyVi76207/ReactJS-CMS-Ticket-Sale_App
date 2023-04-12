@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Data_ListTicketControl } from "../../Data";
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../components/firebase/firebase-config";
 import { hadleConvertsSecondsToDate } from "../../function/FormatDate";
