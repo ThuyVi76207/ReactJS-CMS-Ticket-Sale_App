@@ -80,10 +80,10 @@ function MoreTicketModal() {
       valueTimeUse: valueTimeUse,
       dateStartContractExport: dateStartContractExport,
       valueTimeExport: valueTimeExport,
-      priceOdd: priceOddRef.current,
-      priceCombo: priceComboRef.current,
-      numberTicket: numberTicketRef.current,
-      status: status,
+      priceOdd: Number(priceOddRef.current),
+      priceCombo: Number(priceComboRef.current),
+      numberTicket: Number(numberTicketRef.current),
+      status: Number(status),
     });
   };
 
@@ -121,7 +121,7 @@ function MoreTicketModal() {
     setOddticketCombo(!oddticketCombo);
   };
 
-  // console.log("Check status", status);
+  console.log("Check status", typeof status);
 
   if (!title) return null;
   return (
