@@ -9,7 +9,11 @@ import { addSuccessUpdateModal } from "../reducers/modal/updateTicketModalSlice"
 import { useEffect, useState } from "react";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../components/firebase/firebase-config";
-import { hadleConvertsSecondsToDate } from "../function/FormatDate";
+import {
+  hadleConvertsSecondsToDate,
+  handleConvertsSecondToTime,
+  reverseString,
+} from "../function/FormatDate";
 
 const SettingPage = () => {
   const [listPackageTicket, setListPackageTicket] = useState<any[]>([]);
@@ -85,12 +89,23 @@ const SettingPage = () => {
                   <td className="text-right">
                     <h2>{item.dateStartContractUse}</h2>
                     <h2>
-                      {hadleConvertsSecondsToDate(
+                      {handleConvertsSecondToTime(
                         item.valueTimeUse.seconds,
                         item.valueTimeUse.nanoseconds
                       )}
                     </h2>
                   </td>
+                  <td className="text-right">
+                    <h2>{item.dateStartContractExport}</h2>
+                    <h2>
+                      {handleConvertsSecondToTime(
+                        item.valueTimeExport.seconds,
+                        item.valueTimeExport.nanoseconds
+                      )}
+                    </h2>
+                  </td>
+                  <td className="text-right">{item.priceOdd} VNĐ</td>
+                  <td className="text-left">{item.priceCombo}</td>
                 </tr>
               );
             })}
