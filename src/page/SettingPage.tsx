@@ -9,11 +9,8 @@ import { addSuccessUpdateModal } from "../reducers/modal/updateTicketModalSlice"
 import { useEffect, useState } from "react";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../components/firebase/firebase-config";
-import {
-  hadleConvertsSecondsToDate,
-  handleConvertsSecondToTime,
-  reverseString,
-} from "../function/FormatDate";
+import { handleConvertsSecondToTime } from "../function/FormatDate";
+import { formatPriceVND } from "../function/FormatPrice";
 
 const SettingPage = () => {
   const [listPackageTicket, setListPackageTicket] = useState<any[]>([]);
@@ -23,11 +20,12 @@ const SettingPage = () => {
   const handleOnClickAppComboTicket = () => {
     dispatch(addSuccessModal({ title: "Thêm gói vé", rightButtonText: "Lưu" }));
   };
-  const handleOnclickUpdateTicket = () => {
+  const handleOnclickUpdateTicket = (item: object) => {
     dispatch(
       addSuccessUpdateModal({
         title: "Cập nhật thông tin gói vé",
         rightButtonText: "Lưu",
+        data: item,
       })
     );
   };
@@ -104,8 +102,53 @@ const SettingPage = () => {
                       )}
                     </h2>
                   </td>
-                  <td className="text-right">{item.priceOdd} VNĐ</td>
-                  <td className="text-left">{item.priceCombo}</td>
+                  <td className="text-right">
+                    {formatPriceVND(item.priceOdd)} VNĐ
+                  </td>
+
+                  <td className="text-left">
+                    {item.priceCombo === 0 && item.numberTicket === 0 ? (
+                      <h2>{"-"}</h2>
+                    ) : (
+                      <h2>
+                        {formatPriceVND(item.priceCombo)} VNĐ/
+                        {item.numberTicket} Vé
+                      </h2>
+                    )}
+                  </td>
+
+                  <td className="text-left">
+                    {Options_ControlStatus.map((val, ind) => {
+                      return val.value === item.status ? (
+                        <div
+                          key={ind}
+                          className={`p-[8px] border rounded-[4px] text-[12px] font-medium w-auto
+                          ${
+                            item.status === 1
+                              ? "border-[#03AC00] text-[#03AC00] bg-[#DEF7E0]"
+                              : ""
+                          } 
+                           ${
+                             item.status === 2
+                               ? "border-[#FD5959] text-[#FD5959] bg-[#F8EBE8]"
+                               : ""
+                           } 
+                          `}
+                        >
+                          <i className="fas fa-circle mr-[9px] w-[8px] h-[8px]"></i>
+                          {val.label}
+                        </div>
+                      ) : null;
+                    })}
+                  </td>
+
+                  <td
+                    onClick={() => handleOnclickUpdateTicket(item)}
+                    className="flex items-center gap-2"
+                  >
+                    <img src={fiEdit} alt="" />
+                    <h2 className="text-[#FF993C]">Cập nhật</h2>
+                  </td>
                 </tr>
               );
             })}

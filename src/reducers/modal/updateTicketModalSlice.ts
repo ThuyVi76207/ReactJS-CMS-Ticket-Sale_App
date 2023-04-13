@@ -3,11 +3,13 @@ import { RootState } from "../../app/store";
 type initialStateType = {
   title: String;
   rightButtonText: String;
+  data: object;
 };
 
 const initialState: initialStateType = {
   title: "",
   rightButtonText: "",
+  data: {},
 };
 
 export const UpdateTicketModalSlice = createSlice({
@@ -15,16 +17,16 @@ export const UpdateTicketModalSlice = createSlice({
   initialState,
   reducers: {
     addSuccessUpdateModal: (state, action) => {
-      const { title, rightButtonText } = action.payload;
-      return { title, rightButtonText, type: "success" };
+      const { title, rightButtonText, data } = action.payload;
+      return { title, rightButtonText, data, type: "success" };
     },
     addErrorUpdateModal: (state, action) => {
-      const { title, rightButtonText } = action.payload;
-      return { title, rightButtonText, type: "error" };
+      const { title, rightButtonText, data } = action.payload;
+      return { title, rightButtonText, data, type: "error" };
     },
     addWarningUpdateModal: (state, action) => {
-      const { title, rightButtonText } = action.payload;
-      return { title, rightButtonText, type: "warning" };
+      const { title, rightButtonText, data } = action.payload;
+      return { title, rightButtonText, data, type: "warning" };
     },
     removeUpdateModal: (state, action) => {
       return initialState;
