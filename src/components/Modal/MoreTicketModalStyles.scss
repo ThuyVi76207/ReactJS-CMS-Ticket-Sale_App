@@ -60,3 +60,15 @@
         transform: rotate(45deg);
     }
 }
+
+.timepicker-frmCreate {
+    .ant-picker {
+        // height: 40px !important;
+
+        svg {
+            width: 18px;
+            height: 18px;
+            color: #FF993C;
+        }
+    }
+}

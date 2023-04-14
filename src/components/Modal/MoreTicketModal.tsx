@@ -2,32 +2,37 @@ import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { removeModal } from "../../reducers/modal/moreTicketModalSlice";
 import CommonInput from "../InputCommon/CommonInput";
-import TimePicker from "react-time-picker";
+
 import "./MoreTicketModalStyles.scss";
-import "react-time-picker/dist/TimePicker.css";
-import "react-clock/dist/Clock.css";
+
 import ScheduleCommon from "../InputCommon/ScheduleCommon";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
 import { Options_ControlStatus } from "../../constant/index";
+import { DatePicker, TimePicker } from "antd";
+import { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+import type { DatePickerProps } from "antd";
+
+const format = "HH:mm:ss";
 
 function MoreTicketModal() {
   const comboTicketRef = collection(db, "comboticket");
-
-  const [valueTimeUse, setValueTimeUse] = useState(new Date()); //new Date()
-  const [valueTimeExport, setValueTimeExport] = useState(new Date());
+  const [valueTimeUse, setValueTimeUse] = useState<Dayjs | null>(null);
+  const [valueTimeExport, setValueTimeExport] = useState<Dayjs | null>(null);
   const dispatch = useAppDispatch();
   const { title, rightButtonText } =
     useAppSelector((state) => state.moreTicketModal) || {};
   console.log("check titile", title, rightButtonText);
 
   const [nameTicket, setNameTicket] = useState("");
-  const [dateStartContractUse, setDateStartContractUse] = useState(
-    new Date().toISOString().split("T")[0]
-  );
-  const [dateStartContractExport, setDateStartContractExport] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [dateStartContractUse, setDateStartContractUse] =
+    useState<Dayjs | null>(null);
+  const [dateStartContractExport, setDateStartContractExport] =
+    useState<Dayjs | null>(null);
+
+  const dateUseRef = useRef("");
+  const dateExportRef = useRef("");
 
   const [oddticket, setOddticket] = useState(false);
   const [priceOdd, setPriceOdd] = useState<number>(0);
@@ -39,6 +44,9 @@ function MoreTicketModal() {
   const priceComboRef = useRef<number>(0);
   const numberTicketRef = useRef<number>(0);
   const [status, setStatus] = useState<number>(1);
+
+  const timeUseRef = useRef("");
+  const timeExportRef = useRef("");
 
   const [error, setError] = useState({
     nameTicket: "",
@@ -71,15 +79,18 @@ function MoreTicketModal() {
 
     let idPackage = "ALT" + new Date().toISOString().split("T")[0];
     let idPackageConvert = idPackage.replace(/-/g, "");
-    console.log("Check id package", idPackageConvert);
+
+    // console.log("Check id package", idPackageConvert);
+
+    // console.log("Check timr", timeExportRef, timeUseRef);
 
     await addDoc(comboTicketRef, {
       idCombo: idPackageConvert,
       nameTicket: nameTicket,
-      dateStartContractUse: dateStartContractUse,
-      valueTimeUse: valueTimeUse,
-      dateStartContractExport: dateStartContractExport,
-      valueTimeExport: valueTimeExport,
+      dateStartContractUse: String(dateUseRef.current),
+      valueTimeUse: String(timeUseRef.current),
+      dateStartContractExport: String(dateExportRef.current),
+      valueTimeExport: String(timeExportRef.current),
       priceOdd: Number(priceOddRef.current),
       priceCombo: Number(priceComboRef.current),
       numberTicket: Number(numberTicketRef.current),
@@ -113,15 +124,15 @@ function MoreTicketModal() {
 
       priceComboRef.current,
       oddticketCombo,
-      numberTicketRef.current
+      numberTicketRef.current,
+      valueTimeUse,
+      dateStartContractUse
     );
   }, [oddticketCombo, priceCombo, numberTicket]);
 
   const handleThirdPartyComboTicketOnChange = () => {
     setOddticketCombo(!oddticketCombo);
   };
-
-  console.log("Check status", typeof status);
 
   if (!title) return null;
   return (
@@ -159,21 +170,43 @@ function MoreTicketModal() {
                   </h2>
                   <div className="flex gap-[10px] mt-2">
                     <div className="w-[47%]">
-                      <ScheduleCommon
+                      <DatePicker
+                        format={"DD/MM/YYYY"}
+                        value={dateStartContractUse}
+                        onChange={(date) => {
+                          let test = dayjs(date);
+                          // console.log(test.format());
+                          setDateStartContractUse(date);
+                          dateUseRef.current = test.format();
+                        }}
+                      />
+                      {/* <ScheduleCommon
                         onChange={(e: any) =>
                           setDateStartContractUse(e.target.value)
                         }
                         date={dateStartContractUse}
-                      />
+                      /> */}
                     </div>
-                    <div>
-                      <TimePicker
+                    <div className="timepicker-frmCreate">
+                      {/* <TimePicker
                         onChange={(e: any) => setValueTimeUse(e)}
                         value={valueTimeUse}
                         format={"HH:mm:ss"}
                         hourPlaceholder="HH"
                         minutePlaceholder="mm"
                         secondPlaceholder="ss"
+                      /> */}
+                      <TimePicker
+                        size="large"
+                        placeholder="hh:mm:ss"
+                        value={valueTimeUse}
+                        onChange={(time) => {
+                          let test = dayjs(time);
+                          console.log("test", test.format());
+                          console.log("Check tem", dayjs(test.format()));
+                          setValueTimeUse(time);
+                          timeUseRef.current = test.format();
+                        }}
                       />
                     </div>
                   </div>
@@ -184,22 +217,44 @@ function MoreTicketModal() {
                   </h2>
                   <div className="flex gap-[10px] mt-2">
                     <div className="w-[47%]">
-                      <ScheduleCommon
+                      <DatePicker
+                        format={"DD/MM/YYYY"}
+                        value={dateStartContractExport}
+                        onChange={(date) => {
+                          let test = dayjs(date);
+                          // console.log(test.format());
+                          setDateStartContractExport(date);
+                          dateExportRef.current = test.format();
+                        }}
+                      />
+                      {/* <ScheduleCommon
                         onChange={(e: any) =>
                           setDateStartContractExport(e.target.value)
                         }
                         date={dateStartContractExport}
-                      />
+                      /> */}
                     </div>
-                    <div>
+                    <div className="timepicker-frmCreate">
                       <TimePicker
+                        size="large"
+                        placeholder="hh:mm:ss"
+                        value={valueTimeExport}
+                        onChange={(time, timeString) => {
+                          let test = dayjs(time);
+                          setValueTimeExport(time);
+                          timeExportRef.current = test.format();
+
+                          // setTem(timeString);
+                        }}
+                      />
+                      {/* <TimePicker
                         onChange={(e: any) => setValueTimeExport(e)}
                         value={valueTimeExport}
                         format={"HH:mm:ss"}
                         hourPlaceholder="HH"
                         minutePlaceholder="mm"
                         secondPlaceholder="ss"
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>
@@ -224,6 +279,7 @@ function MoreTicketModal() {
                     <input
                       className="bg-[#c0d6f3] rounded-[8px] px-[10px] py-[6px] outline-none w-[148px]"
                       type="number"
+                      min={0}
                       placeholder="Giá vé"
                       value={priceOdd}
                       onChange={(e: any) => setPriceOdd(e.target.value)}
@@ -247,6 +303,7 @@ function MoreTicketModal() {
                       className="bg-[#F1F4F8] rounded-[8px] px-[10px] py-[6px] outline-none w-[148px]"
                       type="number"
                       placeholder="Giá vé"
+                      min={0}
                       value={priceCombo}
                       onChange={(e: any) => setPriceCombo(e.target.value)}
                     />
@@ -255,6 +312,7 @@ function MoreTicketModal() {
                       className="bg-[#F1F4F8] rounded-[8px] px-[10px] py-[6px] outline-none w-[120px]"
                       type="number"
                       placeholder="Số vé"
+                      min={0}
                       value={numberTicket}
                       onChange={(e: any) => setNumberTicket(e.target.value)}
                     />
