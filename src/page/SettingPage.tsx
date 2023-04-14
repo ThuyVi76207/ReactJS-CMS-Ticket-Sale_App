@@ -85,21 +85,19 @@ const SettingPage = () => {
                   <td className="text-left">{item.idCombo}</td>
                   <td className="text-center">{item.nameTicket}</td>
                   <td className="text-right">
-                    <h2>{item.dateStartContractUse}</h2>
                     <h2>
-                      {handleConvertsSecondToTime(
-                        item.valueTimeUse.seconds,
-                        item.valueTimeUse.nanoseconds
-                      )}
+                      {new Date(item.dateStartContractUse).toLocaleDateString()}
                     </h2>
+                    <h2>{new Date(item.valueTimeUse).toLocaleTimeString()}</h2>
                   </td>
                   <td className="text-right">
-                    <h2>{item.dateStartContractExport}</h2>
                     <h2>
-                      {handleConvertsSecondToTime(
-                        item.valueTimeExport.seconds,
-                        item.valueTimeExport.nanoseconds
-                      )}
+                      {new Date(
+                        item.dateStartContractExport
+                      ).toLocaleDateString()}
+                    </h2>
+                    <h2>
+                      {new Date(item.valueTimeExport).toLocaleTimeString()}
                     </h2>
                   </td>
                   <td className="text-right">

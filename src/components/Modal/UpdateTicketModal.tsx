@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import CommonInput from "../InputCommon/CommonInput";
-import TimePicker from "react-time-picker";
+
 import "./MoreTicketModalStyles.scss";
-import "react-time-picker/dist/TimePicker.css";
-import "react-clock/dist/Clock.css";
+
 import ScheduleCommon from "../InputCommon/ScheduleCommon";
 import { removeUpdateModal } from "../../reducers/modal/updateTicketModalSlice";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
 import { Options_ControlStatus } from "../../constant";
-import { handleConvertsSecondToTime } from "../../function/FormatDate";
+import { DatePicker, TimePicker } from "antd";
+import { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 function UpdateTicketModal() {
   // const [value, setValue] = useState(); //new Date()
@@ -23,12 +24,13 @@ function UpdateTicketModal() {
   const [idEvent, setIdEvent] = useState("");
   const [nameEvent, setNameEvent] = useState("");
 
-  const [dateStartContractUse, setDateStartContractUse] = useState(
-    new Date().toISOString().split("T")[0]
-  );
-  const [dateStartContractExport, setDateStartContractExport] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const [dateStartContractUse, setDateStartContractUse] =
+    useState<Dayjs | null>(null);
+  const [dateStartContractExport, setDateStartContractExport] =
+    useState<Dayjs | null>(null);
+
+  const dateUseRef = useRef("");
+  const dateExportRef = useRef("");
 
   const [oddticket, setOddticket] = useState(false);
   const [priceOdd, setPriceOdd] = useState<number>(0);
@@ -42,11 +44,14 @@ function UpdateTicketModal() {
   const priceComboRef = useRef<number>(0);
   const numberTicketRef = useRef<number>(0);
   const [status, setStatus] = useState<number>(1);
-  const [valueTimeUse, setValueTimeUse] = useState(new Date());
-  //new Date()
-  const [valueTimeExport, setValueTimeExport] = useState(new Date());
+  const [valueTimeUse, setValueTimeUse] = useState<Dayjs | null>(null);
+  const [valueTimeExport, setValueTimeExport] = useState<Dayjs | null>(null);
 
-  const docRef = doc(db, "comboticket", "M40b6S82xCPyTJRaMECa");
+  const timeUseRef = useRef("");
+  const timeExportRef = useRef("");
+
+  const [idDoc, setIdDoc] = useState("");
+
   //new Date().toISOString().split("T")[0]
   const [error, setError] = useState({
     idEvent: "",
@@ -68,23 +73,17 @@ function UpdateTicketModal() {
 
   useEffect(() => {
     if (!data.dateStartContractUse) return;
-    setDateStartContractUse(data.dateStartContractUse);
-    setDateStartContractExport(data.dateStartContractExport);
+
+    setIdDoc(data.id);
+    setDateStartContractUse(dayjs(data.dateStartContractUse));
+    setDateStartContractExport(dayjs(data.dateStartContractExport));
+
     setNumberTicket(data.numberTicket);
     setPriceCombo(data.priceCombo);
     setPriceOdd(data.priceOdd);
-    setValueTimeExport(
-      new Date(
-        data.valueTimeExport.seconds * 1000 +
-          data.valueTimeExport.nanoseconds / 1000000
-      )
-    );
-    setValueTimeUse(
-      new Date(
-        data.valueTimeUse.seconds * 1000 +
-          data.valueTimeUse.nanoseconds / 1000000
-      )
-    );
+
+    setValueTimeExport(dayjs(data.valueTimeUse));
+    setValueTimeUse(dayjs(data.valueTimeExport));
     setStatus(data.status);
   }, [data]);
 
@@ -97,13 +96,15 @@ function UpdateTicketModal() {
 
     if (!isValidated()) return;
 
-    const data = {
-      // idCombo: idPackageConvert,
-      // nameTicket: nameTicket,
-      dateStartContractUse: dateStartContractUse,
-      valueTimeUse: valueTimeUse,
-      dateStartContractExport: dateStartContractExport,
-      valueTimeExport: valueTimeExport,
+    const docRef = doc(db, "comboticket", idDoc);
+
+    const dataFB = {
+      idCombo: data.idCombo,
+      nameTicket: data.nameTicket,
+      dateStartContractUse: String(dateUseRef.current),
+      valueTimeUse: String(timeUseRef.current),
+      dateStartContractExport: String(dateExportRef.current),
+      valueTimeExport: String(timeExportRef.current),
       priceOdd: priceOddRef.current,
       priceCombo: priceComboRef.current,
       numberTicket: numberTicketRef.current,
@@ -113,7 +114,7 @@ function UpdateTicketModal() {
       nameEvent: nameEvent,
     };
 
-    setDoc(docRef, data)
+    setDoc(docRef, dataFB)
       .then((docRef) => {
         console.log("Entire Document has been updated successfully");
       })
@@ -127,7 +128,13 @@ function UpdateTicketModal() {
     } else {
       priceOddRef.current = priceOdd;
     }
-    console.log("Check oddticket", priceOddRef.current, oddticket);
+    console.log(
+      "Check oddticket",
+      priceOddRef.current,
+      oddticket,
+      valueTimeExport,
+      valueTimeUse
+    );
   }, [oddticket, priceOdd]);
 
   const handleThirdPartyTicketOnChange = () => {
@@ -209,22 +216,35 @@ function UpdateTicketModal() {
                   </h2>
                   <div className="flex gap-[10px] mt-2">
                     <div className="w-[47%]">
-                      <ScheduleCommon
-                        onChange={(e: any) =>
-                          setDateStartContractUse(e.target.value)
-                        }
-                        date={dateStartContractUse}
+                      <DatePicker
+                        format={"DD/MM/YYYY"}
+                        value={dateStartContractUse}
+                        onChange={(date) => {
+                          let test = dayjs(date);
+                          // console.log(test.format());
+                          setDateStartContractUse(date);
+                          dateUseRef.current = test.format();
+                        }}
                       />
                     </div>
                     <div>
                       <TimePicker
+                        value={valueTimeUse}
+                        onChange={(time) => {
+                          let test = dayjs(time);
+                          setValueTimeUse(time);
+                          timeUseRef.current = test.format();
+                        }}
+                      />
+
+                      {/* <TimePicker
                         onChange={(e: any) => setValueTimeUse(e)}
                         value={valueTimeUse}
                         format={"HH:mm:ss"}
                         hourPlaceholder="HH"
                         minutePlaceholder="mm"
                         secondPlaceholder="ss"
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>
@@ -234,22 +254,35 @@ function UpdateTicketModal() {
                   </h2>
                   <div className="flex gap-[10px] mt-2">
                     <div className="w-[47%]">
-                      <ScheduleCommon
-                        onChange={(e: any) =>
-                          setDateStartContractExport(e.target.value)
-                        }
-                        date={dateStartContractExport}
+                      <DatePicker
+                        format={"DD/MM/YYYY"}
+                        value={dateStartContractExport}
+                        onChange={(date) => {
+                          let test = dayjs(date);
+                          // console.log(test.format());
+                          setDateStartContractExport(date);
+                          dateExportRef.current = test.format();
+                        }}
                       />
                     </div>
                     <div>
                       <TimePicker
+                        value={valueTimeExport}
+                        onChange={(time) => {
+                          let test = dayjs(time);
+                          setValueTimeExport(time);
+                          timeExportRef.current = test.format();
+                        }}
+                      />
+
+                      {/* <TimePicker
                         onChange={(e: any) => setValueTimeExport(e)}
                         value={valueTimeExport}
                         format={"HH:mm:ss"}
                         hourPlaceholder="HH"
                         minutePlaceholder="mm"
                         secondPlaceholder="ss"
-                      />
+                      /> */}
                     </div>
                   </div>
                 </div>
@@ -274,6 +307,7 @@ function UpdateTicketModal() {
                     <input
                       className="bg-[#c0d6f3] rounded-[8px] px-[10px] py-[6px] outline-none w-[148px]"
                       type="number"
+                      min={0}
                       placeholder="Giá vé"
                       value={priceOdd}
                       onChange={(e: any) => setPriceOdd(e.target.value)}
@@ -296,6 +330,7 @@ function UpdateTicketModal() {
                     <input
                       className="bg-[#F1F4F8] rounded-[8px] px-[10px] py-[6px] outline-none w-[148px]"
                       type="number"
+                      min={0}
                       placeholder="Giá vé"
                       value={priceCombo}
                       onChange={(e: any) => setPriceCombo(e.target.value)}
@@ -304,6 +339,7 @@ function UpdateTicketModal() {
                     <input
                       className="bg-[#F1F4F8] rounded-[8px] px-[10px] py-[6px] outline-none w-[120px]"
                       type="number"
+                      min={0}
                       placeholder="Số vé"
                       value={numberTicket}
                       onChange={(e: any) => setNumberTicket(e.target.value)}
