@@ -28,7 +28,7 @@ export const UpdateTicketModalSlice = createSlice({
       const { title, rightButtonText, data } = action.payload;
       return { title, rightButtonText, data, type: "warning" };
     },
-    removeUpdateModal: (state, action) => {
+    removeUpdateModal: () => {
       return initialState;
     },
   },

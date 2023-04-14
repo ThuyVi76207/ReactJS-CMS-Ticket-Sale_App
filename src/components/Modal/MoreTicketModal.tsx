@@ -59,7 +59,7 @@ function MoreTicketModal() {
   };
 
   const handleCloseModal = () => {
-    dispatch(removeModal(null));
+    dispatch(removeModal());
   };
 
   // console.log("Chekc time ", value);
