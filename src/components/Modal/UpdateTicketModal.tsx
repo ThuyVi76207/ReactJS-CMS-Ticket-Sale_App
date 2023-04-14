@@ -15,35 +15,35 @@ import { handleConvertsSecondToTime } from "../../function/FormatDate";
 function UpdateTicketModal() {
   // const [value, setValue] = useState(); //new Date()
   const dispatch = useAppDispatch();
-  const { title, rightButtonText, data } =
-    useAppSelector((state) => state.updateTicketModal) || {};
+  const { title, rightButtonText, data } = useAppSelector(
+    (state) => state.updateTicketModal
+  );
   console.log("check titile", title, rightButtonText, data);
 
   const [idEvent, setIdEvent] = useState("");
   const [nameEvent, setNameEvent] = useState("");
 
   const [dateStartContractUse, setDateStartContractUse] = useState(
-    data.dateStartContractUse
+    new Date().toISOString().split("T")[0]
   );
   const [dateStartContractExport, setDateStartContractExport] = useState(
-    data.dateStartContractExport
+    new Date().toISOString().split("T")[0]
   );
 
   const [oddticket, setOddticket] = useState(false);
-  const [priceOdd, setPriceOdd] = useState<number>(data.priceOdd);
+  const [priceOdd, setPriceOdd] = useState<number>(0);
   const priceOddRef = useRef<number>(0);
 
   const [oddticketCombo, setOddticketCombo] = useState(false);
-  const [priceCombo, setPriceCombo] = useState<number>(data.priceCombo);
-  const [numberTicket, setNumberTicket] = useState<number>(data.numberTicket);
+  const [priceCombo, setPriceCombo] = useState<number>(0);
+  const [numberTicket, setNumberTicket] = useState<number>(
+    data.numberTicket ? data.numberTicket : 0
+  );
   const priceComboRef = useRef<number>(0);
   const numberTicketRef = useRef<number>(0);
   const [status, setStatus] = useState<number>(1);
-  const [valueTimeUse, setValueTimeUse] = useState();
-  // handleConvertsSecondToTime(
-  //   data.valueTimeUse?.seconds,
-  //   data.valueTimeUse?.nanoseconds
-  // ) //new Date()
+  const [valueTimeUse, setValueTimeUse] = useState(new Date());
+  //new Date()
   const [valueTimeExport, setValueTimeExport] = useState(new Date());
 
   const docRef = doc(db, "comboticket", "M40b6S82xCPyTJRaMECa");
@@ -66,8 +66,30 @@ function UpdateTicketModal() {
     return validated;
   };
 
+  useEffect(() => {
+    if (!data.dateStartContractUse) return;
+    setDateStartContractUse(data.dateStartContractUse);
+    setDateStartContractExport(data.dateStartContractExport);
+    setNumberTicket(data.numberTicket);
+    setPriceCombo(data.priceCombo);
+    setPriceOdd(data.priceOdd);
+    setValueTimeExport(
+      new Date(
+        data.valueTimeExport.seconds * 1000 +
+          data.valueTimeExport.nanoseconds / 1000000
+      )
+    );
+    setValueTimeUse(
+      new Date(
+        data.valueTimeUse.seconds * 1000 +
+          data.valueTimeUse.nanoseconds / 1000000
+      )
+    );
+    setStatus(data.status);
+  }, [data]);
+
   const handleCloseModal = () => {
-    dispatch(removeUpdateModal(null));
+    dispatch(removeUpdateModal());
   };
 
   const handleOnSubmitUpdateForm = async (e: any) => {
@@ -122,7 +144,10 @@ function UpdateTicketModal() {
     }
     console.log(
       "Check combo oddticket",
-
+      // new Date(
+      //   data.valueTimeUse.seconds * 1000 +
+      //     data.valueTimeUse.nanoseconds / 1000000
+      // )
       priceComboRef.current,
       oddticketCombo,
       numberTicketRef.current
