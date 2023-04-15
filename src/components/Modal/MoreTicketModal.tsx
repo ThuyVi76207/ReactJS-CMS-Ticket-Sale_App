@@ -96,6 +96,8 @@ function MoreTicketModal() {
       numberTicket: Number(numberTicketRef.current),
       status: Number(status),
     });
+
+    handleCloseModal();
   };
 
   useEffect(() => {
@@ -163,14 +165,15 @@ function MoreTicketModal() {
                   required
                 />
               </div>
-              <div className="flex items-center gap-[25px]">
+              <div className="flex items-center gap-[25px] mb-3">
                 <div>
                   <h2 className="text-[16px] font-semibold opacity-70">
                     Ngày áp dụng
                   </h2>
                   <div className="flex gap-[10px] mt-2">
-                    <div className="w-[47%]">
+                    <div className="w-[47%] timepicker-frmCreate">
                       <DatePicker
+                        size="large"
                         format={"DD/MM/YYYY"}
                         value={dateStartContractUse}
                         onChange={(date) => {
@@ -216,8 +219,9 @@ function MoreTicketModal() {
                     Ngày hết hạn
                   </h2>
                   <div className="flex gap-[10px] mt-2">
-                    <div className="w-[47%]">
+                    <div className="w-[47%] timepicker-frmCreate">
                       <DatePicker
+                        size="large"
                         format={"DD/MM/YYYY"}
                         value={dateStartContractExport}
                         onChange={(date) => {
