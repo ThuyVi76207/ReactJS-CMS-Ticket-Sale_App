@@ -125,8 +125,11 @@ function UpdateTicketModal() {
     setDoc(docRef, dataFB)
       .then((docRef) => {
         console.log("Entire Document has been updated successfully");
+        handleCloseModal();
       })
       .catch((error) => {
+        handleCloseModal();
+        alert("Có lỗi xảy ra vui lòng thử lại sau!!!");
         console.log(error);
       });
   };
@@ -217,14 +220,15 @@ function UpdateTicketModal() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-[25px]">
+              <div className="flex items-center gap-[25px] mb-3">
                 <div>
                   <h2 className="text-[16px] font-semibold opacity-70">
                     Ngày áp dụng
                   </h2>
                   <div className="flex gap-[10px] mt-2">
-                    <div className="w-[47%]">
+                    <div className="w-[47%] timepicker-frmCreate">
                       <DatePicker
+                        size="large"
                         format={"DD/MM/YYYY"}
                         value={dateStartContractUse}
                         onChange={(date) => {
@@ -235,8 +239,9 @@ function UpdateTicketModal() {
                         }}
                       />
                     </div>
-                    <div>
+                    <div className="timepicker-frmCreate">
                       <TimePicker
+                        size="large"
                         value={valueTimeUse}
                         onChange={(time) => {
                           let test = dayjs(time);
@@ -261,8 +266,9 @@ function UpdateTicketModal() {
                     Ngày hết hạn
                   </h2>
                   <div className="flex gap-[10px] mt-2">
-                    <div className="w-[47%]">
+                    <div className="w-[47%] timepicker-frmCreate">
                       <DatePicker
+                        size="large"
                         format={"DD/MM/YYYY"}
                         value={dateStartContractExport}
                         onChange={(date) => {
@@ -273,8 +279,9 @@ function UpdateTicketModal() {
                         }}
                       />
                     </div>
-                    <div>
+                    <div className="timepicker-frmCreate">
                       <TimePicker
+                        size="large"
                         value={valueTimeExport}
                         onChange={(time) => {
                           let test = dayjs(time);
