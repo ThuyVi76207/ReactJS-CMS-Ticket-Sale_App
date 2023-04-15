@@ -4,7 +4,6 @@ import CommonInput from "../InputCommon/CommonInput";
 
 import "./MoreTicketModalStyles.scss";
 
-import ScheduleCommon from "../InputCommon/ScheduleCommon";
 import { removeUpdateModal } from "../../reducers/modal/updateTicketModalSlice";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";

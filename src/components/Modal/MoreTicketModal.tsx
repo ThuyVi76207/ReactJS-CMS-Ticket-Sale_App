@@ -5,16 +5,12 @@ import CommonInput from "../InputCommon/CommonInput";
 
 import "./MoreTicketModalStyles.scss";
 
-import ScheduleCommon from "../InputCommon/ScheduleCommon";
 import { addDoc, collection } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
 import { Options_ControlStatus } from "../../constant/index";
 import { DatePicker, TimePicker } from "antd";
 import { Dayjs } from "dayjs";
 import dayjs from "dayjs";
-import type { DatePickerProps } from "antd";
-
-const format = "HH:mm:ss";
 
 function MoreTicketModal() {
   const comboTicketRef = collection(db, "comboticket");

@@ -1,9 +1,18 @@
 import { useState } from "react";
 import "./FillterTicketStyles.scss";
-const FillterTicket = () => {
+
+interface FillterTicketInter {
+  selectedControl: number;
+  onChange: (e: any) => void;
+}
+
+const FillterTicket = ({ selectedControl, onChange }: FillterTicketInter) => {
   const [dateStartContract, setDateStartContract] = useState(
     new Date().toISOString().split("T")[0]
   );
+
+  console.log("Check select", selectedControl);
+
   return (
     <div className="px-[20px] fillter-ticket">
       <h2 className="text-[16px] font-bold my-[25px]">Lọc vé</h2>
@@ -14,16 +23,34 @@ const FillterTicket = () => {
         <h2>Tình trạng đối soát</h2>
         <div className="radio-btn">
           <label className="form-control">
-            <input type="radio" name="radio" defaultChecked />
+            <input
+              type="radio"
+              name="radio"
+              checked={selectedControl == 0}
+              onChange={onChange}
+              value={0}
+            />
             Tất cả
           </label>
 
           <label className="form-control">
-            <input type="radio" name="radio" />
+            <input
+              type="radio"
+              name="radio"
+              checked={selectedControl == 1}
+              onChange={onChange}
+              value={1}
+            />
             Đã đối soát
           </label>
           <label className="form-control">
-            <input type="radio" name="radio" />
+            <input
+              type="radio"
+              name="radio"
+              checked={selectedControl == 2}
+              onChange={onChange}
+              value={2}
+            />
             Chưa đối soát
           </label>
         </div>

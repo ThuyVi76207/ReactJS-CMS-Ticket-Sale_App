@@ -1,3 +1,4 @@
+import { useState } from "react";
 import SearchInput from "../components/InputCommon/SearchInput";
 import Menu from "../components/Menu/Menu";
 import Navbar from "../components/Navbar/Navbar";
@@ -5,6 +6,7 @@ import FillterTicket from "../features/TicketControl/FillterTicket";
 import ListTicket from "../features/TicketControl/ListTicket";
 
 const TicketControl = () => {
+  const [selectedControl, setSelectedControl] = useState<number>(0);
   return (
     <div className="bg-[#E5E5E5]">
       <div className="flex rounded-[24px] bg-[#F9F6F4]">
@@ -23,11 +25,14 @@ const TicketControl = () => {
                   <SearchInput />
                   <div></div>
                 </div>
-                <ListTicket />
+                <ListTicket fillterValue={selectedControl} />
               </div>
             </div>
             <div className=" w-[29%] bg-[#FFFFFF] rounded-[24px] mr-[24px] mb-[32px] pb-[20px] ">
-              <FillterTicket />
+              <FillterTicket
+                selectedControl={selectedControl}
+                onChange={(e: any) => setSelectedControl(e.target.value)}
+              />
             </div>
           </div>
         </div>
