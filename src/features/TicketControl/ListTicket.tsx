@@ -1,13 +1,51 @@
 import { useEffect, useState } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../../components/firebase/firebase-config";
 import { hadleConvertsSecondsToDate } from "../../function/FormatDate";
 
-const ListTicket = () => {
-  const [listTickets, setListTickets] = useState<any[]>([]);
-  const managerRef = collection(db, "ticket");
+interface ListTicketFill {
+  fillterValue: number;
+}
+const managerRef = collection(db, "ticket");
+const q = query(managerRef, where("control", "==", true));
+const p = query(managerRef, where("control", "==", false));
 
-  useEffect(() => {
+const ListTicket = ({ fillterValue }: ListTicketFill) => {
+  console.log("Chekc fill", typeof fillterValue);
+  const [listTickets, setListTickets] = useState<any[]>([]);
+
+  // useEffect(() => {
+  //   if (fillterValue === 0) {
+  //     const unscribe = onSnapshot(managerRef, (snapshot) => {
+  //       let listTicket: any[] = [];
+  //       snapshot.forEach((doc) => {
+  //         listTicket.push({ ...doc.data(), id: doc.id });
+  //       });
+  //       setListTickets(listTicket);
+  //     });
+  //     return () => unscribe();
+  //   } else if (fillterValue === 1) {
+  //     const unscribe = onSnapshot(p, (snapshot) => {
+  //       let listTicket: any[] = [];
+  //       snapshot.forEach((doc) => {
+  //         listTicket.push({ ...doc.data(), id: doc.id });
+  //       });
+  //       setListTickets(listTicket);
+  //     });
+  //     return () => unscribe();
+  //   } else if (fillterValue === 2) {
+  //     const unscribe = onSnapshot(q, (snapshot) => {
+  //       let listTicket: any[] = [];
+  //       snapshot.forEach((doc) => {
+  //         listTicket.push({ ...doc.data(), id: doc.id });
+  //       });
+  //       setListTickets(listTicket);
+  //     });
+  //     return () => unscribe();
+  //   }
+  // }, [fillterValue, managerRef]);
+
+  const fillAll = () => {
     const unscribe = onSnapshot(managerRef, (snapshot) => {
       let listTicket: any[] = [];
       snapshot.forEach((doc) => {
@@ -16,7 +54,49 @@ const ListTicket = () => {
       setListTickets(listTicket);
     });
     return () => unscribe();
-  }, []);
+  };
+
+  const fillNoControl = () => {
+    const unscribe = onSnapshot(p, (snapshot) => {
+      let listTicket: any[] = [];
+      snapshot.forEach((doc) => {
+        listTicket.push({ ...doc.data(), id: doc.id });
+      });
+      setListTickets(listTicket);
+    });
+    return () => unscribe();
+  };
+
+  const fillControl = () => {
+    const unscribe = onSnapshot(q, (snapshot) => {
+      let listTicket: any[] = [];
+      snapshot.forEach((doc) => {
+        listTicket.push({ ...doc.data(), id: doc.id });
+      });
+      setListTickets(listTicket);
+    });
+    return () => unscribe();
+  };
+
+  useEffect(() => {
+    switch (Number(fillterValue)) {
+      case 0:
+        fillAll();
+        break;
+      case 1:
+        fillControl();
+        break;
+      case 2:
+        fillNoControl();
+        break;
+
+      default:
+        fillAll();
+        break;
+    }
+  }, [fillterValue]);
+
+  console.log("Check list tickets", listTickets);
 
   return (
     <table className="mt-[30px] w-full pb-[54px]">

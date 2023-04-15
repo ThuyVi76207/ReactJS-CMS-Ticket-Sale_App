@@ -1,4 +1,3 @@
-import { Data_ListPackageTicket } from "../Data";
 import SearchInput from "../components/InputCommon/SearchInput";
 import MainLayout from "../layouts/MainLayout";
 import fiEdit from "../assets/icon/fi_edit.svg";
@@ -9,7 +8,6 @@ import { addSuccessUpdateModal } from "../reducers/modal/updateTicketModalSlice"
 import { useEffect, useState } from "react";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../components/firebase/firebase-config";
-import { handleConvertsSecondToTime } from "../function/FormatDate";
 import { formatPriceVND } from "../function/FormatPrice";
 
 const SettingPage = () => {
