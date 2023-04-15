@@ -78,12 +78,20 @@ function UpdateTicketModal() {
     setDateStartContractUse(dayjs(data.dateStartContractUse));
     setDateStartContractExport(dayjs(data.dateStartContractExport));
 
+    dateUseRef.current = data.dateStartContractUse;
+    dateExportRef.current = data.dateStartContractExport;
+
+    // console.log(data.dateStartContractUse, data.dateStartContractExport);
+
     setNumberTicket(data.numberTicket);
     setPriceCombo(data.priceCombo);
     setPriceOdd(data.priceOdd);
 
     setValueTimeExport(dayjs(data.valueTimeUse));
     setValueTimeUse(dayjs(data.valueTimeExport));
+
+    timeUseRef.current = data.valueTimeUse;
+    timeExportRef.current = data.valueTimeExport;
     setStatus(data.status);
   }, [data]);
 
