@@ -49,7 +49,7 @@ const SettingPage = () => {
         </h2>
 
         <div className="flex items-center justify-between mt-[32px]">
-          <SearchInput />
+          {/* <SearchInput /> */}
           <div className="flex items-center gap-[10px] text-[#FF993C] text-[16px] font-bold">
             <div className="border border-[#FF993C] py-[8px] px-[14px] rounded-[6px] cursor-pointer">
               Xuất file (.csv)
