@@ -6,6 +6,8 @@ import FillterTicket from "../features/TicketControl/FillterTicket";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "../components/firebase/firebase-config";
 import { hadleConvertsSecondsToDate } from "../function/FormatDate";
+import { Pagination } from "@material-ui/lab";
+import usePagination from "../hooks/Pagination";
 
 const managerRef = collection(db, "ticket");
 const q = query(managerRef, where("control", "==", true));
@@ -15,6 +17,16 @@ const TicketControl = () => {
   const [selectedControl, setSelectedControl] = useState<number>(0);
   const [listTickets, setListTickets] = useState<any[]>([]);
   const [searchKey, setSearchKey] = useState("");
+
+  let [page, setPage] = useState(1);
+  const PER_PAGE = 3;
+  const count = Math.ceil(listTickets.length / PER_PAGE);
+  const _DATA = usePagination(listTickets, PER_PAGE);
+
+  const handleChange = (e: any, p: number) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
 
   const fillAll = () => {
     const unscribe = onSnapshot(managerRef, (snapshot) => {
@@ -109,7 +121,7 @@ const TicketControl = () => {
                       <th className="text-left">Cổng check - in</th>
                       <th></th>
                     </tr>
-                    {listTickets.map((val: any, index) => {
+                    {_DATA.currentData().map((val: any, index: number) => {
                       return (
                         <tr
                           key={index}
@@ -144,6 +156,18 @@ const TicketControl = () => {
                     })}
                   </tbody>
                 </table>
+                <div className="mt-[54px]">
+                  <div className="w-[25%] mx-auto">
+                    <Pagination
+                      count={count}
+                      size="large"
+                      page={page}
+                      // variant="outlined"
+                      shape="rounded"
+                      onChange={handleChange}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
             <div className=" w-[29%] bg-[#FFFFFF] rounded-[24px] mr-[24px] mb-[32px] pb-[20px] ">

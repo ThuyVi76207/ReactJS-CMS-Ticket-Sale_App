@@ -9,12 +9,26 @@ import { useEffect, useState } from "react";
 import { collection, doc, onSnapshot } from "firebase/firestore";
 import { db } from "../components/firebase/firebase-config";
 import { formatPriceVND } from "../function/FormatPrice";
+import usePagination from "../hooks/Pagination";
+import { Pagination } from "@material-ui/lab";
 
 const SettingPage = () => {
   const [listPackageTicket, setListPackageTicket] = useState<any[]>([]);
   const managerRef = collection(db, "comboticket");
+  const [searchKey, setSearchKey] = useState("");
 
   const dispatch = useAppDispatch();
+
+  let [page, setPage] = useState(1);
+  const PER_PAGE = 3;
+  const count = Math.ceil(listPackageTicket.length / PER_PAGE);
+  const _DATA = usePagination(listPackageTicket, PER_PAGE);
+
+  const handleChange = (e: any, p: number) => {
+    setPage(p);
+    _DATA.jump(p);
+  };
+
   const handleOnClickAppComboTicket = () => {
     dispatch(addSuccessModal({ title: "Thêm gói vé", rightButtonText: "Lưu" }));
   };
@@ -40,6 +54,15 @@ const SettingPage = () => {
     return () => unscribe();
   }, []);
 
+  const searchBlog = (e: any) => {
+    e.preventDefault();
+    setListPackageTicket(
+      listPackageTicket.filter((item) =>
+        item.idCombo.toLowerCase().includes(searchKey.toLowerCase())
+      )
+    );
+  };
+
   console.log("Check list package", listPackageTicket);
   return (
     <MainLayout>
@@ -50,6 +73,10 @@ const SettingPage = () => {
 
         <div className="flex items-center justify-between mt-[32px]">
           {/* <SearchInput /> */}
+          <SearchInput
+            onSubmit={(e: any) => searchBlog(e)}
+            onChange={(e: any) => setSearchKey(e.target.value)}
+          />
           <div className="flex items-center gap-[10px] text-[#FF993C] text-[16px] font-bold">
             <div className="border border-[#FF993C] py-[8px] px-[14px] rounded-[6px] cursor-pointer">
               Xuất file (.csv)
@@ -76,7 +103,7 @@ const SettingPage = () => {
               <th className="text-left">Tình trạng</th>
               <th></th>
             </tr>
-            {listPackageTicket.map((item, ind) => {
+            {_DATA.currentData().map((item: any, ind: number) => {
               return (
                 <tr key={ind} className="text-[12px] font-medium opacity-70">
                   <td className="text-center">{ind + 1}</td>
@@ -194,7 +221,18 @@ const SettingPage = () => {
             })} */}
           </tbody>
         </table>
-        <div className="mt-[54px]"></div>
+        <div className="mt-[54px]">
+          <div className="w-[25%] mx-auto">
+            <Pagination
+              count={count}
+              size="large"
+              page={page}
+              // variant="outlined"
+              shape="rounded"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
       </div>
     </MainLayout>
   );
