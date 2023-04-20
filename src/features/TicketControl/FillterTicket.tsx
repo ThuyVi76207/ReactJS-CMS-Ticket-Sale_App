@@ -4,14 +4,24 @@ import "./FillterTicketStyles.scss";
 interface FillterTicketInter {
   selectedControl: number;
   onChange: (e: any) => void;
+  handleFillter: (start: string, end: string) => (e: React.MouseEvent) => void;
 }
 
-const FillterTicket = ({ selectedControl, onChange }: FillterTicketInter) => {
+const FillterTicket = ({
+  selectedControl,
+  onChange,
+  handleFillter,
+}: FillterTicketInter) => {
   const [dateStartContract, setDateStartContract] = useState(
     new Date().toISOString().split("T")[0]
   );
+  const [dateEndContract, setDateEndContract] = useState(
+    new Date().toISOString().split("T")[0]
+  );
 
-  console.log("Check select", selectedControl);
+  const [activeFillter, setActiveFillter] = useState(false);
+
+  // console.log("Check select", dateStartContract, dateEndContract);
 
   return (
     <div className="px-[20px] fillter-ticket">
@@ -77,32 +87,35 @@ const FillterTicket = ({ selectedControl, onChange }: FillterTicketInter) => {
             setDateStartContract(e.target.value);
           }}
           value={dateStartContract}
-          min={new Date().toISOString().split("T")[0]}
+          // min={new Date().toISOString().split("T")[0]}
           className="rounded-[8px] bg-[#E0E0E0] text-[#A5A8B1] px-2 text-[14px] placeholder-shown:border-gray-500 focus:outline-none h-[40px] w-[40%]"
         ></input>
       </div>
 
       <div className="flex items-center justify-between my-[20px]">
         <label
-          htmlFor="dateStartContract"
+          htmlFor="dateEndContract"
           className="text-[#1E0D03] text-[14px] font-semibold mr-4"
         >
           Đến ngày
         </label>
 
         <input
-          id="dateStartContract"
+          id="dateEndContract"
           type="date"
           onChange={(e) => {
-            setDateStartContract(e.target.value);
+            setDateEndContract(e.target.value);
           }}
-          value={dateStartContract}
-          min={new Date().toISOString().split("T")[0]}
-          className="rounded-[8px] bg-[#F7F8FB] text-[#A5A8B1] px-2 text-[14px] placeholder-shown:border-gray-500 focus:outline-none h-[40px] w-[40%]"
+          value={dateEndContract}
+          // min={new Date().toISOString().split("T")[0]}
+          className="rounded-[8px] bg-[#F7F8FB] text-[rgb(165,168,177)] px-2 text-[14px] placeholder-shown:border-gray-500 focus:outline-none h-[40px] w-[40%]"
         ></input>
       </div>
 
-      <div className="text-center text-[16px] cursor-pointer text-[#FF993C] font-bold border border-[#FF993C] py-[8px] px-[20px] w-[35%] rounded-[8px] mx-auto">
+      <div
+        onClick={handleFillter(dateStartContract, dateEndContract)}
+        className="text-center text-[16px] cursor-pointer text-[#FF993C] font-bold border border-[#FF993C] py-[8px] px-[20px] w-[35%] rounded-[8px] mx-auto"
+      >
         Lọc
       </div>
     </div>

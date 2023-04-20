@@ -10,8 +10,17 @@ import { Pagination } from "@material-ui/lab";
 import usePagination from "../hooks/Pagination";
 
 const managerRef = collection(db, "ticket");
-const q = query(managerRef, where("control", "==", true));
-const p = query(managerRef, where("control", "==", false));
+// const all = query(managerRef, where("useDate", "!=", ""));
+const q = query(
+  managerRef,
+
+  where("control", "==", true)
+);
+const p = query(
+  managerRef,
+
+  where("control", "==", false)
+);
 
 const TicketControl = () => {
   const [selectedControl, setSelectedControl] = useState<number>(0);
@@ -19,7 +28,7 @@ const TicketControl = () => {
   const [searchKey, setSearchKey] = useState("");
 
   let [page, setPage] = useState(1);
-  const PER_PAGE = 3;
+  const PER_PAGE = 7;
   const count = Math.ceil(listTickets.length / PER_PAGE);
   const _DATA = usePagination(listTickets, PER_PAGE);
 
@@ -88,6 +97,26 @@ const TicketControl = () => {
       )
     );
   };
+
+  const handleFillter =
+    (start: string, end: string) => (e: React.MouseEvent) => {
+      let _start = new Date(start);
+      let _end = new Date(end);
+      const t = query(
+        managerRef,
+        where("useDate", ">", _start),
+        where("useDate", "<", _end)
+      );
+      console.log("Check start", start, end);
+      const unscribe = onSnapshot(t, (snapshot) => {
+        let listTicket: any[] = [];
+        snapshot.forEach((doc) => {
+          listTicket.push({ ...doc.data(), id: doc.id });
+        });
+        setListTickets(listTicket);
+      });
+      return () => unscribe();
+    };
 
   return (
     <div className="bg-[#E5E5E5]">
@@ -174,6 +203,7 @@ const TicketControl = () => {
               <FillterTicket
                 selectedControl={selectedControl}
                 onChange={(e: any) => setSelectedControl(e.target.value)}
+                handleFillter={handleFillter}
               />
             </div>
           </div>
