@@ -68,7 +68,7 @@ const Menu = () => {
               <h2>Đối soát vé</h2>
             </Link>
           </li>
-          <li className="hover:bg-[#FFB800] opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold hover:text-white rounded-[8px]">
+          {/* <li className="hover:bg-[#FFB800] opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold hover:text-white rounded-[8px]">
             <Link
               to={"/insight/danh-sach-su-kien"}
               className="flex gap-[12px] items-center py-[15px] pl-[16px] pr-[24px] 2xl:pl-[8px] 2xl:pr-[16px]"
@@ -103,7 +103,7 @@ const Menu = () => {
               </span>
               <h2>Quản lý thiết bị</h2>
             </Link>
-          </li>
+          </li> */}
           <li className="hover:bg-[#FFB800] opacity-60 hover:opacity-100 w-full  cursor-pointer hover:font-bold  hover:text-white rounded-[8px]">
             <Link
               to={"/insight/cai-dat"}

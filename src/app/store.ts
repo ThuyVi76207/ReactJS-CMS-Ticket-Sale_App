@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import moreTicketModalReducer from "../reducers/modal/moreTicketModalSlice";
 import updateTicketModalReducer from "../reducers/modal/updateTicketModalSlice";
+import changeUsedateModalReducer from "../reducers/modal/changeUsedateModalSlice";
 
 const rootReducer: any = {
   moreTicketModal: moreTicketModalReducer,
   updateTicketModal: updateTicketModalReducer,
+  changeUsedateModal: changeUsedateModalReducer,
 };
 const store = configureStore({
   reducer: rootReducer,

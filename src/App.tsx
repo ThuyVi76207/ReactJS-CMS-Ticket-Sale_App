@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import NotFound from "./components/NotFound";
 import MoreTicketModal from "./components/Modal/MoreTicketModal";
 import UpdateTicketModal from "./components/Modal/UpdateTicketModal";
+import ChangeUseDateModal from "./components/Modal/ChangeUseDateModal";
 
 const CMSTicketApp = React.lazy(() => import("./page"));
 
@@ -20,6 +21,7 @@ function App() {
         </BrowserRouter>
         <MoreTicketModal />
         <UpdateTicketModal />
+        <ChangeUseDateModal />
       </Suspense>
     </div>
   );

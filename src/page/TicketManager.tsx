@@ -12,8 +12,13 @@ import { useEffect, useState } from "react";
 import { hadleConvertsSecondsToDate } from "../function/FormatDate";
 import { Pagination } from "@material-ui/lab";
 import usePagination from "../hooks/Pagination";
+import { useAppDispatch } from "../hooks";
+import { addSuccessChangeModal } from "../reducers/modal/changeUsedateModalSlice";
+import { CSVLink } from "react-csv";
 
 const TicketManager = () => {
+  const dispatch = useAppDispatch();
+
   const [listTickets, setListTickets] = useState<any[]>([]);
   const [searchKey, setSearchKey] = useState("");
   const managerRef = collection(db, "ticket");
@@ -21,6 +26,15 @@ const TicketManager = () => {
   const PER_PAGE = 7;
   const count = Math.ceil(listTickets.length / PER_PAGE);
   const _DATA = usePagination(listTickets, PER_PAGE);
+
+  const headers = [
+    { label: "Booking code", key: "bookingCode" },
+    { label: "Số vé", key: "ticketNumber" },
+    { label: "Tên sự kiện", key: "nameEvent" },
+    { label: "Tình trạng sử dụng", key: "useStatus" },
+    // { label: "Ngày xuất vé", key: "email" },
+    { label: "Cổng check - in", key: "checkin" },
+  ];
 
   const handleChange = (e: any, p: number) => {
     setPage(p);
@@ -50,11 +64,15 @@ const TicketManager = () => {
     );
   };
 
-  // const paginate = (array: any, page_size: number, page_number: number) => {
-  //   return array.slice((page_number - 1) * page_size, page_number * page_size);
-  // };
-
-  // console.log("Chekc paginate", paginate(listTickets, 2, 2));
+  const handleOnClickChangeUsedate = (val: object) => {
+    dispatch(
+      addSuccessChangeModal({
+        title: "Đổi ngày sử dụng vé",
+        rightButtonText: "Lưu",
+        data: val,
+      })
+    );
+  };
 
   return (
     <MainLayout>
@@ -73,9 +91,11 @@ const TicketManager = () => {
               <img className="w-[20px]" src={iconFillter} alt="" />
               <span>Lọc vé</span>
             </div>
-            <div className="border border-[#FF993C] py-[8px] px-[14px] rounded-[6px] cursor-pointer">
-              Xuất file (.csv)
-            </div>
+            <CSVLink data={listTickets} headers={headers}>
+              <div className="border border-[#FF993C] py-[8px] px-[14px] rounded-[6px] cursor-pointer">
+                Xuất file (.csv)
+              </div>
+            </CSVLink>
           </div>
         </div>
 
@@ -143,7 +163,7 @@ const TicketManager = () => {
                     )}
                   </td>
                   <td>{val.checkin ? val.checkin : "-"}</td>
-                  <td>
+                  <td onClick={() => handleOnClickChangeUsedate(val)}>
                     <img src={iconSlicebar} alt="" />
                   </td>
                 </tr>

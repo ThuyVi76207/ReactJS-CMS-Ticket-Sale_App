@@ -32,6 +32,7 @@ const SettingPage = () => {
   const handleOnClickAppComboTicket = () => {
     dispatch(addSuccessModal({ title: "Thêm gói vé", rightButtonText: "Lưu" }));
   };
+
   const handleOnclickUpdateTicket = (item: object) => {
     dispatch(
       addSuccessUpdateModal({
